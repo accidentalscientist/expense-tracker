@@ -4,8 +4,9 @@ from datetime import datetime
 # Create your models here.
 class Expense (models.Model):
     date_added = models.DateField(default=datetime.now)
+    name = models.CharField(max_length=20,)
     description = models.TextField()
-    amount = models.FloatField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     CATEGORY_CHOICES = [
         ('food', 'Food'),
         ('transport', 'Transport'),
@@ -15,7 +16,8 @@ class Expense (models.Model):
     category = models.CharField(max_length=20, choices= CATEGORY_CHOICES, blank=True, default='others')
     
     def __str__(self):
-        return f'{self.description}'
+        return f'{self.name} - {self.amount} - {self.description}'
     
     class Meta:
         verbose_name_plural = 'Expenses'
+        ordering = ['-date_added']
