@@ -82,12 +82,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config['DATABASES']['ENGINE'],
-        'NAME': config['DATABASES']['NAME'],
-        'USER': config ['DATABASES']['USER'],
-        'PASSWORD': config ['DATABASES']['PASSWORD'],
-        'HOST': config ['DATABASES']['HOST'],
-        'PORT': config ['DATABASES']['PORT'],
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'databasename',            # changed for privacy
+        'USER': 'username',          # changed for privacy
+        'PASSWORD': 'password',  # changed for privacy
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

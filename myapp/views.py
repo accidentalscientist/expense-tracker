@@ -23,15 +23,22 @@ def index(request):
         context['amount'] = request.POST.get('amount')
         context['category'] = request.POST.get ('category')
 
-        if not context['date_added'] or not context['name'] or not context['description'] or not context['amount'] or not context['category']:
+        if not all(context.values()):
             messages.error(request, 'All fields must be filled')
-            return render (request, 'myapp/index.html', context)
+            return render(request, 'myapp/index.html', context)
+
         try:
             # Validate and process amount
             amount_obj = abs(Decimal(str(context['amount'])))
 
             # Vaidate date format
-            parsed_date = parse(context['date_added']).date()
+            try:
+                raw_date = context['date_added']
+                parsed_date = parse(raw_date).date()
+            except Exception as e:
+                messages.error(request, f"Could not parse date '{raw_date}': {e}")
+                return render(request, 'myapp/index.html', context)
+
             # date_obj = parsed_date.strftime('%Y-%m-%d')
 
             # this part should make sure that future dates cannot be handed in.
@@ -52,14 +59,14 @@ def index(request):
                 amount = amount_obj,
                 category = context['category'],
             )
-            messages.success(request, f'Expense {context['name']} added successfully')
+            messages.success(request, f"Expense {context['name']} added successfully")
             return redirect('index')
 
         except ValueError as e:
             messages.error(request,f'Invalid date format: {e}')
             return render (request, 'myapp/index.html', context)
         except Exception as e:
-            messages.error(request, f'{context['name']} expense not added: {e}')
+            messages.error(request, f"{context['name']} expense not added: {e}")
             return render (request, 'myapp/index.html', context)
             
     return render(request,'myapp/index.html', context)

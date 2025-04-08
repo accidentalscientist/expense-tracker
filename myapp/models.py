@@ -1,9 +1,10 @@
 from django.db import models
 from datetime import datetime
+from django.utils import timezone
 
 # Create your models here.
 class Expense (models.Model):
-    date_added = models.DateField(default=datetime.now)
+    date_added = models.DateField(default=timezone.now)
     name = models.CharField(max_length=20,)
     description = models.TextField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -12,6 +13,7 @@ class Expense (models.Model):
         ('transport', 'Transport'),
         ('utilities', 'Utilities'),
         ('entertainment', 'Entertainment'),
+        ('others', 'Others'),  # ✅ add this
     ]
     category = models.CharField(max_length=20, choices= CATEGORY_CHOICES, blank=True, default='others')
     
